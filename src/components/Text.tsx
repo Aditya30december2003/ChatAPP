@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { GoPaperclip } from "react-icons/go";
 import { PiPaperPlaneRightBold } from "react-icons/pi";
 import { CiCamera , CiVideoOn } from "react-icons/ci";

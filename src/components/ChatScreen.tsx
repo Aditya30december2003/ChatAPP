@@ -1,8 +1,18 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import tick from '../assets/tick.png';
 
+interface Chat {
+  id: string;
+  message: string;
+  time: string;
+  sender: {
+    self: boolean;
+    image: string;
+  };
+}
+
 const ChatScreen: React.FC = () => {
-  const [chats, setChats] = useState<any[]>([]);
+  const [chats, setChats] = useState<Chat[]>([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -25,7 +35,9 @@ const ChatScreen: React.FC = () => {
       } else {
         setChats((prevChats) => {
           const newChats = page === 0 ? data.chats.reverse() : [...data.chats.reverse(), ...prevChats];
-          return [...new Set(newChats.map((chat: any) => JSON.stringify(chat)))].map((chat: string) => JSON.parse(chat));
+          const uniqueChats = Array.from(new Set(newChats.map((chat: Chat) => JSON.stringify(chat))))
+            .map((chatString: string) => JSON.parse(chatString) as Chat);
+          return uniqueChats;
         });
         setHasMore(data.chats.length > 0);
       }
