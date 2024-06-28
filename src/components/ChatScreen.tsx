@@ -1,18 +1,18 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import tick from '../assets/tick.png';
 
-const ChatScreen = ({ messages }) => {
-  const [chats, setChats] = useState([]);
+const ChatScreen = () => {
+  const [chats, setChats] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const topObserverRef = useRef(null);
-  const bottomRef = useRef(null);
-  const chatContainerRef = useRef(null);
+  const topObserverRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const [initialLoad, setInitialLoad] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const getData = async (page) => {
+  const getData = async (page: number) => {
     try {
       setLoading(true);
       setIsLoadingMore(page !== 0);
@@ -71,12 +71,13 @@ const ChatScreen = ({ messages }) => {
 
     return () => {
       if (topObserverRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.unobserve(topObserverRef.current);
       }
     };
   }, [hasMore, loading]);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string | number | Date) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
   };
