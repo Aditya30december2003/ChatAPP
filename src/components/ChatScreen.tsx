@@ -35,8 +35,8 @@ const ChatScreen: React.FC = () => {
       } else {
         setChats((prevChats) => {
           const newChats = page === 0 ? data.chats.reverse() : [...data.chats.reverse(), ...prevChats];
-          const uniqueChats = Array.from(new Set(newChats.map((chat: Chat) => JSON.stringify(chat))))
-            .map((chatString: string) => JSON.parse(chatString) as Chat);
+          const uniqueChats = Array.from(new Set(newChats.map(chat => JSON.stringify(chat))))
+            .map(chatString => JSON.parse(chatString) as Chat);
           return uniqueChats;
         });
         setHasMore(data.chats.length > 0);
