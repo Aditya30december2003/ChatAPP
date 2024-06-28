@@ -6,6 +6,7 @@ const ChatScreen = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const topObserverRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -16,6 +17,7 @@ const ChatScreen = () => {
     try {
       setLoading(true);
       setIsLoadingMore(page !== 0);
+      setError(null);
       const response = await fetch(`https://qa.corider.in/assignment/chat?page=${page}`);
       const data = await response.json();
       if (data.chats.length === 0) {
@@ -28,7 +30,8 @@ const ChatScreen = () => {
         setHasMore(data.chats.length > 0);
       }
     } catch (error) {
-      console.log(error);
+      console.error('Failed to fetch chats:', error);
+      setError('Failed to load chats. Please try again.');
     } finally {
       setLoading(false);
       setIsLoadingMore(false);
@@ -71,7 +74,6 @@ const ChatScreen = () => {
 
     return () => {
       if (topObserverRef.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.unobserve(topObserverRef.current);
       }
     };
@@ -90,6 +92,7 @@ const ChatScreen = () => {
           <div className='spinner'></div>
         </div>
       )}
+      {error && <div className="text-red-500 text-center">{error}</div>}
       {chats.map((item, index) => {
         const showDate = index === 0 || formatDate(chats[index - 1].time) !== formatDate(item.time);
 
