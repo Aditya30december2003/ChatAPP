@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import tick from '../assets/tick.png';
 
-const ChatScreen = () => {
+const ChatScreen: React.FC = () => {
   const [chats, setChats] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const ChatScreen = () => {
       } else {
         setChats((prevChats) => {
           const newChats = page === 0 ? data.chats.reverse() : [...data.chats.reverse(), ...prevChats];
-          return [...new Set(newChats.map(JSON.stringify))].map(JSON.parse);
+          return [...new Set(newChats.map((chat: any) => JSON.stringify(chat)))].map((chat: string) => JSON.parse(chat));
         });
         setHasMore(data.chats.length > 0);
       }
